@@ -1,0 +1,13 @@
+{
+  "name": "ai-meeting-assistant",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Turn meeting transcripts into evidence-backed structured minutes.",
+  "scripts": {
+    "start": "node server.js",
+    "test": "node --test"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}

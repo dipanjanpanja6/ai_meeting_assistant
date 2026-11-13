@@ -1,0 +1,37 @@
+[
+  {
+    "id": "q4-sales",
+    "title": "Q4 sales planning",
+    "category": "Sales",
+    "duration": "28 min",
+    "text": "Maya: We need to improve the Q4 sales forecast. The team discussed using a new dashboard, but we have not chosen a vendor.\nRahul: I will prepare the Q4 sales report by Friday.\nMaya: We agreed to review the forecast every Monday.\nJon: Can we include the renewal pipeline too? We do not have the latest numbers yet.\nMaya: Yes, let's follow up on the renewal data next week."
+  },
+  {
+    "id": "product-launch",
+    "title": "Product launch readiness",
+    "category": "Product",
+    "duration": "34 min",
+    "text": "Aisha: The team discussed a June launch, but support coverage is still uncertain.\nLeo: We decided to launch the beta on June 12, subject to the security review.\nAisha: Leo, can you confirm the support rota by Wednesday?\nLeo: Yes, I will share the rota by Wednesday.\nMina: Is the onboarding email ready?\nAisha: I will draft the onboarding email tomorrow. We should revisit launch readiness after security signs off."
+  },
+  {
+    "id": "budget-review",
+    "title": "Marketing budget review",
+    "category": "Marketing",
+    "duration": "22 min",
+    "text": "Chris: We discussed moving spend from search into events, but no decision was made today.\nPriya: I will compare the event and search channel costs by Tuesday.\nChris: We agreed to keep the current budget unchanged until we see that comparison.\nSam: What is our target cost per lead for the next campaign?\nPriya: That is still open. Let's follow up after the cost review."
+  },
+  {
+    "id": "incident-retro",
+    "title": "Service incident retrospective",
+    "category": "Engineering",
+    "duration": "41 min",
+    "text": "Nora: The database alert fired late during Friday's incident.\nEvan: We agreed to lower the alert threshold from 85% to 75%.\nNora: Evan will update the alert configuration by Thursday.\nEvan: I will also add the recovery steps to the runbook by Friday.\nTess: Do we know whether the delayed alert was caused by the new deploy?\nNora: Not yet. We will investigate the deploy timeline and revisit the alert routing next week."
+  },
+  {
+    "id": "hiring-sync",
+    "title": "Design hiring sync",
+    "category": "People",
+    "duration": "19 min",
+    "text": "Drew: We discussed adding a take-home exercise to the design interview, but the panel was split.\nMei: I will draft two interview-loop options by Monday.\nDrew: We decided to keep the current interview process for this hiring round.\nMei: Should we include a portfolio review for senior candidates?\nDrew: Let's follow up after we compare the two options."
+  }
+]

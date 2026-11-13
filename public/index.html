@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#f6f5f0">
+    <title>Minutes — AI Meeting Assistant</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=DM+Serif+Display&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/styles.css">
+    <script src="/app.js" defer></script>
+  </head>
+  <body>
+    <header class="topbar">
+      <a class="brand" href="/" aria-label="Minutes home"><span class="brand-mark">m</span><span>minutes<span class="brand-period">.</span></span></a>
+      <div class="topbar-right">
+        <span class="product-label">AI meeting assistant</span>
+        <span class="mode-pill" id="mode-pill"><span class="mode-dot"></span><span id="mode-label">Checking mode</span></span>
+      </div>
+    </header>
+
+    <main class="page-shell">
+      <div class="page-heading">
+        <div>
+          <p class="eyebrow">TRANSCRIPT → CLARITY</p>
+          <h1>Make the meeting count.</h1>
+          <p class="subtitle">Decisions, owners, and next steps, grounded in what was actually said.</p>
+        </div>
+        <div class="heading-note"><span class="note-mark">✳</span><span>Evidence-backed<br>meeting notes</span></div>
+      </div>
+
+      <section class="workspace" aria-label="Meeting transcript analyzer">
+        <aside class="transcript-panel">
+          <div class="panel-heading">
+            <div><p class="section-kicker">01 / INPUT</p><h2>Transcript</h2></div>
+            <label class="sample-picker">Examples <select id="sample-select" aria-label="Choose an example transcript"></select></label>
+          </div>
+          <div class="transcript-meta"><span id="transcript-category">SALES</span><span id="transcript-duration">28 min</span></div>
+          <textarea id="transcript-input" spellcheck="false" aria-label="Meeting transcript" placeholder="Paste a meeting transcript here…"></textarea>
+          <div class="input-footer">
+            <span id="word-count">0 words</span>
+            <button class="clear-button" id="clear-button" type="button">Clear</button>
+          </div>
+          <button class="analyze-button" id="analyze-button" type="button"><span class="button-icon">↗</span><span id="analyze-label">Extract meeting notes</span><span class="button-arrow">→</span></button>
+          <p class="privacy-note"><span class="lock-icon">●</span> Transcript is processed on this server and not stored.</p>
+        </aside>
+
+        <section class="results-panel" aria-live="polite" aria-label="Structured meeting notes">
+          <div class="results-header">
+            <div><p class="section-kicker">02 / OUTPUT</p><h2>Meeting notes</h2></div>
+            <div class="result-actions"><button class="icon-button" id="copy-button" type="button" title="Copy as JSON" aria-label="Copy as JSON" disabled>⧉</button><button class="icon-button" id="download-button" type="button" title="Download JSON" aria-label="Download JSON" disabled>↓</button></div>
+          </div>
+          <div class="results-content" id="results-content">
+            <div class="empty-state"><span class="empty-glyph">✳</span><p>Your meeting, made clear.</p><span>Analysis will appear here with evidence for every decision and action.</span></div>
+          </div>
+        </section>
+      </section>
+      <footer class="page-footer"><span>Built for the details that matter.</span><span>Structured output · Evidence first · No invented owners</span></footer>
+    </main>
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  </body>
+</html>

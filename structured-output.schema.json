@@ -1,0 +1,39 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Meeting minutes",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["meetingSummary", "keyDecisions", "actionItems", "openQuestions", "followUpItems"],
+  "properties": {
+    "meetingSummary": { "type": "string" },
+    "keyDecisions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["decision", "evidence"],
+        "properties": {
+          "decision": { "type": "string" },
+          "evidence": { "type": "string" }
+        }
+      }
+    },
+    "actionItems": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["task", "owner", "deadline", "status", "evidence"],
+        "properties": {
+          "task": { "type": "string" },
+          "owner": { "type": ["string", "null"] },
+          "deadline": { "type": ["string", "null"] },
+          "status": { "type": "string", "enum": ["Pending", "In progress", "Complete"] },
+          "evidence": { "type": "string" }
+        }
+      }
+    },
+    "openQuestions": { "type": "array", "items": { "type": "string" } },
+    "followUpItems": { "type": "array", "items": { "type": "string" } }
+  }
+}
