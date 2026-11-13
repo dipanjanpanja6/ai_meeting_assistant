@@ -4,13 +4,13 @@ Minutes turns a meeting transcript into a short summary, evidence-backed decisio
 
 ## Run locally
 
-Requires Node.js 18 or newer. No packages to install.
+Requires Node.js 20.9 or newer. Install dependencies with `npm install`.
 
 ```sh
-npm start
+npm run dev
 ```
 
-Open http://localhost:3000. The app starts in **Demo extraction** mode with five example transcripts and a deterministic, rule-based extractor. Demo mode is useful for trying the interface; it is not a general-purpose language model.
+Open http://localhost:3000. For a production-mode local run, use `npm run build` followed by `npm start`. The app starts in **Demo extraction** mode unless a provider API key is configured.
 
 For AI extraction, configure an OpenAI-compatible endpoint and its API key in the local `.env` file (never in browser code). The repo includes NVIDIA defaults in `.env`; enter your key on the `NVIDIA_API_KEY` line:
 
@@ -18,7 +18,7 @@ For AI extraction, configure an OpenAI-compatible endpoint and its API key in th
 NVIDIA_API_KEY=your-key
 ```
 
-Start or restart the app with `npm start`; the server loads `.env` automatically. `.env` is ignored by Git. The server also accepts `LLM_API_KEY` as a provider-neutral key name. Existing `OPENAI_API_KEY` and `OPENAI_MODEL` settings remain supported; defaults without `.env` are the OpenAI API URL and `gpt-4o-mini`. Set `PORT` to change the local port. The server sends transcripts to the configured provider when a key is set. Do not use this mode with sensitive meeting content unless your organization has approved that processing.
+Next.js loads `.env` automatically. `.env` is ignored by Git and Vercel uploads. The server also accepts `LLM_API_KEY` as a provider-neutral key name. Existing `OPENAI_API_KEY` and `OPENAI_MODEL` settings remain supported; defaults without `.env` are the OpenAI API URL and `gpt-4o-mini`. Set `PORT` to change the local port. The server sends transcripts to the configured provider when a key is set. Do not use this mode with sensitive meeting content unless your organization has approved that processing.
 
 ## Output contract
 
@@ -36,7 +36,7 @@ The API response is defined in [`structured-output.schema.json`](structured-outp
 
 1. **Iteration 1: broad summarization.** Asked the model to summarize and list decisions and actions. This encouraged plausible but unsupported owners and turned discussed proposals into decisions.
 2. **Iteration 2: separate extraction categories.** Added a rule to distinguish discussion from explicit agreement and to return null for missing owners and deadlines. This reduced inference, but lacked a way to audit individual claims.
-3. **Current prompt: evidence-first structured extraction.** Requires explicit decision/commitment language, evidence for every decision and action, null for unknown assignment details, and a strict JSON Schema response. Temperature is zero for repeatability. The schema and prompt live in `structured-output.schema.json` and `server.js`.
+3. **Current prompt: evidence-first structured extraction.** Requires explicit decision/commitment language, evidence for every decision and action, null for unknown assignment details, and a strict JSON Schema response. Temperature is zero for repeatability. The schema and prompt live in `structured-output.schema.json` and `lib/meeting-assistant.cjs`.
 
 ## Tests and evaluation
 
@@ -60,6 +60,6 @@ The demo parser is intentionally conservative and only supports explicit English
 
 ## Demo and deployment
 
-The interface includes five selectable transcripts, editable transcript input, one-click analysis, evidence-backed results, JSON copy, and JSON download. For a live demo, deploy the Node server to a host that supports Node.js and configure the provider API key as a server-side environment secret if AI extraction is required. The included app is ready to run locally; a public repository, public live deployment, and recorded demo video must be created/published by the submitter.
+The interface includes five selectable transcripts, editable transcript input, one-click analysis, evidence-backed results, JSON copy, and JSON download. The app uses the Next.js App Router, so Vercel detects the framework automatically. Add `LLM_BASE_URL`, `LLM_MODEL`, and the provider key (as a secret) in the Vercel project's environment settings; never upload `.env`.
 
 ![Minutes app desktop screenshot](public/demo.png)

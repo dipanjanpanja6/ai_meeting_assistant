@@ -2,7 +2,7 @@ const test = require('node:test');
 const assert = require('node:assert/strict');
 const fs = require('node:fs');
 const path = require('node:path');
-const { parseTranscript } = require('../server');
+const { parseTranscript } = require('../lib/meeting-assistant.cjs');
 
 const samples = JSON.parse(fs.readFileSync(path.join(__dirname, '../public/transcripts.json'), 'utf8'));
 
