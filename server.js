@@ -1,3 +1,5 @@
+require('dotenv').config();
+
 const http = require('node:http');
 const fs = require('node:fs');
 const path = require('node:path');
@@ -6,6 +8,9 @@ const root = __dirname;
 const publicRoot = path.join(root, 'public');
 const port = Number(process.env.PORT || 3000);
 const schema = require('./structured-output.schema.json');
+const llmBaseUrl = (process.env.LLM_BASE_URL || 'https://api.openai.com/v1').replace(/\/+$/, '');
+const llmModel = process.env.LLM_MODEL || process.env.OPENAI_MODEL || 'gpt-4o-mini';
+const llmApiKey = process.env.LLM_API_KEY || process.env.NVIDIA_API_KEY || process.env.OPENAI_API_KEY;
 
 const systemPrompt = `You are a precise meeting-minutes assistant. Extract only information supported by the transcript. A topic being discussed is not a decision; include a key decision only when participants explicitly decide, agree, approve, select, or commit to a direction. An action item must be explicitly assigned, requested, or promised. Never infer an owner or deadline: use null when absent. Preserve short transcript evidence for every decision and action. Keep open questions genuinely unresolved. Return JSON matching the provided schema.`;
 
@@ -36,10 +41,11 @@ function parseTranscript(transcript) {
         const requestMatch = statement.match(/\b(?:please|can you|could you|will you)\s+([A-Z][a-z]+)\b/);
         const owner = ownerMatch?.[1] && !/^(?:we|they|i)$/i.test(ownerMatch[1])
           ? ownerMatch[1]
-          : requestSubject?.[1] || requestMatch?.[1] || (/^(?:i'll|i will)\b/i.test(statement) ? speaker : null);
+          : requestSubject?.[1] || requestMatch?.[1] || (/^(?:(?:yes|sure|okay|ok|right|absolutely)[,;:]?\s+)?(?:i'll|i will)\b/i.test(statement) ? speaker : null);
         const taskText = statement
           .replace(/^[A-Z][a-z]+\s+will\s+/i, '')
           .replace(/^[A-Z][a-z]+,?\s+(?:can you|could you|will you)\s+/i, '')
+          .replace(/^(?:yes|sure|okay|ok|right|absolutely)[,;:]?\s+/i, '')
           .replace(/^(?:i'll|i will|we'll|we will|please|can you|could you|will you)\s+/i, '')
           .replace(/\bby\s+[^,.!?]+/i, '')
           .replace(/[.!?]+$/, '')
@@ -71,15 +77,15 @@ function parseTranscript(transcript) {
   };
 }
 
-async function analyzeWithOpenAI(transcript) {
-  const response = await fetch('https://api.openai.com/v1/chat/completions', {
+async function analyzeWithLLM(transcript) {
+  const response = await fetch(`${llmBaseUrl}/chat/completions`, {
     method: 'POST',
     headers: {
-      Authorization: `Bearer ${process.env.OPENAI_API_KEY}`,
+      Authorization: `Bearer ${llmApiKey}`,
       'Content-Type': 'application/json',
     },
     body: JSON.stringify({
-      model: process.env.OPENAI_MODEL || 'gpt-4o-mini',
+      model: llmModel,
       temperature: 0,
       messages: [
         { role: 'system', content: systemPrompt },
@@ -123,7 +129,7 @@ function serveStatic(request, response) {
 
 const server = http.createServer(async (request, response) => {
   if (request.method === 'GET' && request.url === '/api/status') {
-    sendJson(response, 200, { aiEnabled: Boolean(process.env.OPENAI_API_KEY) });
+    sendJson(response, 200, { aiEnabled: Boolean(llmApiKey) });
     return;
   }
 
@@ -140,10 +146,10 @@ const server = http.createServer(async (request, response) => {
           sendJson(response, 400, { error: 'Add a transcript before analyzing.' });
           return;
         }
-        const result = process.env.OPENAI_API_KEY
-          ? await analyzeWithOpenAI(transcript)
+        const result = llmApiKey
+          ? await analyzeWithLLM(transcript)
           : parseTranscript(transcript);
-        sendJson(response, 200, { result, mode: process.env.OPENAI_API_KEY ? 'ai' : 'demo' });
+        sendJson(response, 200, { result, mode: llmApiKey ? 'ai' : 'demo' });
       } catch (error) {
         sendJson(response, 500, { error: error.message || 'Analysis failed.' });
       }

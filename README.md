@@ -12,14 +12,13 @@ npm start
 
 Open http://localhost:3000. The app starts in **Demo extraction** mode with five example transcripts and a deterministic, rule-based extractor. Demo mode is useful for trying the interface; it is not a general-purpose language model.
 
-For AI extraction, provide an OpenAI API key to the server process (never the browser):
+For AI extraction, configure an OpenAI-compatible endpoint and its API key in the local `.env` file (never in browser code). The repo includes NVIDIA defaults in `.env`; enter your key on the `NVIDIA_API_KEY` line:
 
-```powershell
-$env:OPENAI_API_KEY="your-key"
-npm start
+```env
+NVIDIA_API_KEY=your-key
 ```
 
-Optionally set `OPENAI_MODEL` (defaults to `gpt-4o-mini`) and `PORT`. The server sends transcripts to the configured OpenAI API when a key is set. Do not use this mode with sensitive meeting content unless your organization has approved that processing.
+Start or restart the app with `npm start`; the server loads `.env` automatically. `.env` is ignored by Git. The server also accepts `LLM_API_KEY` as a provider-neutral key name. Existing `OPENAI_API_KEY` and `OPENAI_MODEL` settings remain supported; defaults without `.env` are the OpenAI API URL and `gpt-4o-mini`. Set `PORT` to change the local port. The server sends transcripts to the configured provider when a key is set. Do not use this mode with sensitive meeting content unless your organization has approved that processing.
 
 ## Output contract
 
@@ -61,6 +60,6 @@ The demo parser is intentionally conservative and only supports explicit English
 
 ## Demo and deployment
 
-The interface includes five selectable transcripts, editable transcript input, one-click analysis, evidence-backed results, JSON copy, and JSON download. For a live demo, deploy the Node server to a host that supports Node.js and configure `OPENAI_API_KEY` as a server-side environment secret if AI extraction is required. The included app is ready to run locally; a public repository, public live deployment, and recorded demo video must be created/published by the submitter.
+The interface includes five selectable transcripts, editable transcript input, one-click analysis, evidence-backed results, JSON copy, and JSON download. For a live demo, deploy the Node server to a host that supports Node.js and configure the provider API key as a server-side environment secret if AI extraction is required. The included app is ready to run locally; a public repository, public live deployment, and recorded demo video must be created/published by the submitter.
 
 ![Minutes app desktop screenshot](public/demo.png)

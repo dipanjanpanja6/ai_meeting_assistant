@@ -51,6 +51,13 @@ test('group commitments stay unassigned and second sentences are not skipped', (
   assert.equal(result.actionItems[1].owner, 'Evan');
 });
 
+test('affirmative first-person commitments use the speaker as owner', () => {
+  const result = parseTranscript('Leo: Yes, I will share the rota by Wednesday.');
+  assert.equal(result.actionItems[0].task, 'share the rota');
+  assert.equal(result.actionItems[0].owner, 'Leo');
+  assert.equal(result.actionItems[0].deadline, 'Wednesday');
+});
+
 test('a direct request assigns the requested person, not the speaker', () => {
   const result = parseTranscript('Aisha: Leo, can you confirm the rota by Wednesday?');
   assert.equal(result.actionItems[0].owner, 'Leo');
