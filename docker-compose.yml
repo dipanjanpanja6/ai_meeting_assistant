@@ -1,0 +1,17 @@
+services:
+  app:
+    build: .
+    image: streaming-research-assistant:latest
+    container_name: streaming-research-assistant
+    ports:
+      - "${PORT:-3000}:3000"
+    env_file:
+      - path: .env
+        required: false # without .env the app starts in offline demo mode
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://127.0.0.1:3000/health"]
+      interval: 15s
+      timeout: 3s
+      retries: 3
+      start_period: 10s

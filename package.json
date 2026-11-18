@@ -1,0 +1,24 @@
+{
+  "name": "streaming-research-assistant",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Research assistant that streams graph progress and answer tokens over server-sent events.",
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "test": "node --test \"test/**/*.test.js\""
+  },
+  "engines": {
+    "node": ">=20.9"
+  },
+  "dependencies": {
+    "@langchain/core": "1.4.1",
+    "@langchain/langgraph": "1.7.5",
+    "@langchain/openai": "1.8.4",
+    "next": "16.4.6",
+    "react": "19.3.1",
+    "react-dom": "19.3.1"
+  }
+}
